@@ -112,7 +112,8 @@ function prepareInterviewData() {
   
   var interview_data_temp  = JSON.parse(interview_statistics);
   var flight_list_temp  = JSON.parse(departuresFlightList);
-
+  var gate_info  = JSON.parse(MUC_Gate_Info);
+  
   initCurrentTimeVars();	
   
   //get quota data
@@ -192,6 +193,18 @@ function prepareInterviewData() {
   
   for (i = 0; i < today_flight_list.length; i++) {
     let flight = today_flight_list[i];
+
+    //get gate info
+    for (j = 0; j < gate_info.length; j++) {
+      let gate = gate_info[j];
+      if ((gate.Flight == flight.Flight) && (gate.Date == flight.Date))
+      {
+        flight.GateArea = gate.GateArea;
+        flight.Gate = gate.Gate;
+        break;
+      }
+    }
+
     for (j = 0; j < quota_data.length; j++) {
       let quota = quota_data[j];
       if ((quota.quota_id == flight.quota_id) && (quota.Quota>0))
@@ -202,5 +215,5 @@ function prepareInterviewData() {
     }
   }
   
-  console.log("currentQuarter: ", currentQuarter);
+  console.log("today_flight_list: ", today_flight_list);
 }

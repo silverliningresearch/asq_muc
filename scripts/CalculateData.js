@@ -94,8 +94,6 @@ function CalculateAirportAirLineReport() {
       row.Priority = 1;
     }
   }
-
-  console.log("quota_data: ", quota_data);
 }
 
 function getDOOP(date) //"07-02-2023"

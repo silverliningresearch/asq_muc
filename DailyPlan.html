@@ -11,6 +11,7 @@
     <script src="search_list/flight_list_Departure.js"></script>
 
 		
+    <script type="text/javascript" src="https://silverliningresearch.github.io/daily_plan_data_alc/MUC_PEI_AB/data/MUC_Gate_Info.js"></script>
         <!-- <script type="text/javascript" src="https://silverliningresearch.github.io/daily_plan_data_sur_v2/BRU_PROF/interview_statistics.js"></script> 
     <script type="text/javascript" src="https://silverliningresearch.github.io/daily_plan_data_bru/BRU_PROF/data/BRU_flight_list_daily.js"></script>  -->
 
@@ -45,16 +46,17 @@
         var data = new google.visualization.DataTable();
 
         //define header
-        data.addColumn('string', 'Date Time');
-        //data.addColumn('string', 'Date');
-        //data.addColumn('string', 'Time');
+        data.addColumn('string', 'Time');
+        data.addColumn('number', 'TER');
+        data.addColumn('string', 'Gate Area');
+        data.addColumn('string', 'Gate');
         data.addColumn('string', 'Flight');
-        data.addColumn('string', 'Dest');
+        data.addColumn('string', 'To');
         data.addColumn('number', 'Remaining Flights');
         data.addColumn('number', 'Quota');
-        data.addColumn('number', 'Collected');
+        data.addColumn('number', 'Completed');
 				data.addColumn('number', 'Missing');
-        data.addColumn('number', 'Completion Rate %');
+        data.addColumn('number', 'Completed %');
         data.addColumn('number', 'Priority Score');
         data.addColumn('number', 'Priority');
         
@@ -62,9 +64,9 @@
         for (i = 0; i < daily_plan_data.length; i++) {
           var row = daily_plan_data[i];
           data.addRows([[
-              row.Date_Time, 
-              //row.Date, row.Time,
-              row.Flight, row.Dest,  
+              row.Time, 
+              row.TER, row.GateArea, row.Gate,
+              row.Flight, row.DestName, 
               Number(row.remaining_flights), Number(row.Quota), Number(row.Completed), Number(row.Difference), 
               Number(row.Completed_percent), 
               Number(row.Prioritisation_score), 
@@ -89,14 +91,26 @@
         var dashboard = new google.visualization.Dashboard(
         document.getElementById('dashboard_div'));
 
-        //create fiter
-        var options = {
-          //'allowHtml': true, 
-          //'cssClassNames': {font: 'large' },
-          'filterColumnLabel': 'Dest',
+       //create fiter
+       var options_Terminal = {
+          'filterColumnLabel': 'TER',
           "ui": {"label": "", 
                 "labelStacking": 'horizotal',
-                "caption": "Select Dest",
+                "caption": "Select Terminal",
+                }
+        };
+
+        var tableFilter_Terminal = new google.visualization.ControlWrapper({
+          'controlType': 'CategoryFilter',
+          'containerId': 'filter_terminal',
+          'options': options_Terminal
+        });
+
+        var options = {
+          'filterColumnLabel': 'Gate Area',
+          "ui": {"label": "", 
+                "labelStacking": 'horizotal',
+                "caption": "Select Gate Area",
                 }
         };
         
@@ -118,7 +132,7 @@
           }
         });
 
-        dashboard.bind(tableFilter, tableChart);
+        dashboard.bind([tableFilter_Terminal, tableFilter], tableChart);
 
         var view = new google.visualization.DataView(data);
         view.hideColumns([priority_col, priority_col-1]); //unncessary columns: Date_Tome & priority
@@ -139,11 +153,17 @@
   </head>
   <body>
 		<h1>Daily plan - MUC ASQ Survey</h1>
+    <h5 id="download_time"></h5>
     <h4 id="overall_status"></h4>
-    <h4 id="download_time"></h4>
+    
     <div id="dashboard_div">
       <!--Divs that will hold each control and chart-->
+      <div id="filter_terminal"></div>
+      </br>
       <div id="filter_div" style="font-size: 15px"> </div>
+      </br>
+      <div id="table_div"></div>
+    </div>
 
       <!-- <div id="2017" style="z-index:1;position: fixed;top: 70px;left: 850px;font-family: Arial;font-size: 13;color:red;">2017</div> -->
       </br>
