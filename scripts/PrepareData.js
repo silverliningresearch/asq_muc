@@ -111,7 +111,7 @@ function prepareInterviewData() {
   var quota_data_temp = JSON.parse(AirlineDest_quota);
   
   var interview_data_temp  = JSON.parse(interview_statistics);
-  var flight_list_temp  = JSON.parse(departuresFlightList);
+  var flight_list_temp  = JSON.parse(MUC_Departures_Flight_List_Raw);
   var gate_info  = JSON.parse(MUC_Gate_Info);
   
   initCurrentTimeVars();	
