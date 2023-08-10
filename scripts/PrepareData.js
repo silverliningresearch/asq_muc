@@ -173,7 +173,8 @@ function prepareInterviewData() {
     
     //only get today & not departed flight
     if (((currentDate == flight.Date) && notDeparted(flight.Time))
-        || (flight.Date == nextDate))
+        //|| (flight.Date == nextDate)
+      )
     { 
       // flight.nextDay = 0; //display two date infor as requested by Didi
       // if (nextDate == flight.Date) {
