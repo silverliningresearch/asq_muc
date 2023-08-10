@@ -215,5 +215,5 @@ function prepareInterviewData() {
     }
   }
   
-  console.log("today_flight_list: ", today_flight_list);
+//  console.log("today_flight_list: ", today_flight_list);
 }
